@@ -2,20 +2,27 @@ const baseURL = "http://127.0.0.1:8000/api/"; // Update this to your backend's b
 
 // Function to login
 async function login(username, password) {
-    const response = await fetch(`${baseURL}accounts/login/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-    });
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/accounts/token/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
 
-    if (response.ok) {
+        if (!response.ok) {
+            throw new Error('Login failed');
+        }
+
         const data = await response.json();
-        localStorage.setItem("authToken", data.token);
-        window.location.href = "index.html"; // Redirect to dashboard
-    } else {
-        alert("Login failed!");
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        alert('Login successful!');
+        return data;
+    } catch (error) {
+        console.error(error);
+        alert('Error during login.');
     }
 }
 
