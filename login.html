@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/auth.js" defer></script>
+</head>
+<body>
+    <div id="login-container">
+        <h1>Login</h1>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            
+            <button type="submit">Login</button>
+        </form>
+        <p id="error-message" style="color: red; display: none;"></p>
+    </div>
+
+    <div id="register-button-container">
+        <a href="http://127.0.0.1:8000/register/" class="button">Register a New Account</a>
+    </div>    
+</body>
+<script>
+    // Handle login form submission
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        try {
+            await login(username, password); // Calls the login function from auth.js
+        } catch (error) {
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.textContent = "Login failed. Please check your credentials.";
+            errorMessage.style.display = "block";
+        }
+    });
+</script>
+</html>

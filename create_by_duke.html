@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User by Duke</title>
+</head>
+<body>
+    <h1>Create a New User</h1>
+    <form id="dukeForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="nobility">Nobility:</label>
+        <select id="nobility" name="nobility">
+            <option value="9">Stateless</option>
+            <option value="8">Citizen</option>
+            <option value="7">Baron</option>
+            <option value="6">Viscount</option>
+            <option value="5">Count</option>
+            <option value="4">Marquess</option>
+            <option value="3">Count</option>
+            <option value="2">Prince</option>
+            <option value="1">Archduke</option>
+            <option value="0">King</option>
+        </select><br><br>
+
+        <label for="house">House:</label>
+        <input type="text" id="house" name="house"><br><br>
+
+        <button type="submit">Create User</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('dukeForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const response = await fetch('/api/create-by-duke/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),  // Required for CSRF-protected POST
+                },
+            });
+
+            const result = await response.json();
+            const messageDiv = document.getElementById('message');
+            if (response.ok) {
+                messageDiv.textContent = `User created successfully. User ID: ${result.user_id}`;
+                event.target.reset();
+            } else {
+                messageDiv.textContent = `Error: ${result.error}`;
+            }
+        });
+
+        function getCookie(name) {
+            const cookieValue = document.cookie
+                .split('; ')
+                .find(row => row.startsWith(name + '='))
+                ?.split('=')[1];
+            return cookieValue || '';
+        }
+    </script>
+</body>
+</html>
