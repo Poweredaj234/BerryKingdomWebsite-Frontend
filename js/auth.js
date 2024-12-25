@@ -18,13 +18,16 @@ async function login(username, password) {
         const data = await response.json();
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
+
         alert('Login successful!');
-        return data;
+        // Redirect to the desired page (e.g., dashboard.html)
+        window.location.href = 'http://127.0.0.1:3000/index.html';
     } catch (error) {
         console.error(error);
         alert('Login failed. Check your credentials.');
     }
 }
+
 
 async function fetchProtectedData() {
     const accessToken = localStorage.getItem('access_token');
@@ -76,8 +79,15 @@ function logout() {
     }
 }
 
-// Attach logout functionality to the button
-document.getElementById('logout-button').addEventListener('click', logout);
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutButton = document.getElementById("logout-button");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", logout);
+    } else {
+        console.warn("Logout button not found.");
+    }
+});
+
 
 
 // Function to check authentication
