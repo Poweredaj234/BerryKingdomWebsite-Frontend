@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/auth.js" defer></script>
+    <script src="js/auth.js" type="module"></script>
 </head>
 <body>
     <div id="login-container">
@@ -16,20 +17,27 @@
             <button type="submit">Login</button>
         </form>
         <p id="error-message" style="color: red; display: none;"></p>
+        
+        <div id="register-button-container">
+            <a id="register-link" class="button">Register a New Account</a>
+        </div> 
     </div>
 
-    <div id="register-button-container">
-        <a href="http://127.0.0.1:3000/register.html" class="button">Register a New Account</a>
-    </div>    
+    
+    
+    <script type="module">
+        import { login } from './js/auth.js';
+        import { baseURL } from './js/config.js'
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            await login(username, password);
+        });
+        document.getElementById("register-link").href = `${baseURL}register.html`;
+    </script>
 </body>
-<script>
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
 
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        await login(username, password);
-    });
-</script>
 </html>

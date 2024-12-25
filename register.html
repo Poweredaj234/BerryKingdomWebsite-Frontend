@@ -4,30 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="css/register.css">
 </head>
 <body>
-    <h1>Register</h1>
-    <form id="registerForm">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
+    <div id="register-container">
+        <h1>Create Your Account</h1>
+        <form id="registerForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
 
-        <button type="submit">Register</button>
-    </form>
+            <button type="submit" class="button">Register</button>
+        </form>
+        <div id="message"></div>
+        <div id="login-link-container">
+            <a id="login-link" class="button">Return to Login</a>
+        </div> 
+    </div>
 
-    <div id="message"></div>
-
-    <script>
+    <script type="module">
+        import { baseURL, apibaseURL } from './js/config.js';
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const formData = new FormData(event.target);
-            const response = await fetch('/api/register/', {
+            const response = await fetch(`${apibaseURL}accounts/register-user/`, {
                 method: 'POST',
                 body: formData,
             });
@@ -36,11 +43,14 @@
             const messageDiv = document.getElementById('message');
             if (response.ok) {
                 messageDiv.textContent = `User created successfully. User ID: ${result.user_id}`;
+                messageDiv.style.color = 'green';
                 event.target.reset();
             } else {
                 messageDiv.textContent = `Error: ${result.error}`;
+                messageDiv.style.color = 'red';
             }
         });
+        document.getElementById("login-link").href = `${baseURL}login.html`;
     </script>
 </body>
 </html>

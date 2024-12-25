@@ -1,9 +1,9 @@
-const baseURL = "http://127.0.0.1:8000/api/"; // Update this to your backend's base URL
+import { apibaseURL, baseURL } from "./config.js";
 
 // Function to login
-async function login(username, password) {
+export async function login(username, password) {
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/accounts/token/', {
+        const response = await fetch(`${apibaseURL}accounts/token/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,20 +19,19 @@ async function login(username, password) {
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
 
-        alert('Login successful!');
+        //alert('Login successful!');
         // Redirect to the desired page (e.g., dashboard.html)
-        window.location.href = 'http://127.0.0.1:3000/index.html';
+        window.location.href = `${baseURL}index.html`;
     } catch (error) {
         console.error(error);
         alert('Login failed. Check your credentials.');
     }
 }
 
-
 async function fetchProtectedData() {
     const accessToken = localStorage.getItem('access_token');
 
-    const response = await fetch('http://127.0.0.1:8000/api/some-protected-endpoint/', {
+    const response = await fetch(`${apibaseURL}some-protected-endpoint/`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
@@ -49,7 +48,7 @@ async function fetchProtectedData() {
 async function refreshAccessToken() {
     const refreshToken = localStorage.getItem('refresh_token');
 
-    const response = await fetch('http://127.0.0.1:8000/api/accounts/token/refresh/', {
+    const response = await fetch(`${apibaseURL}accounts/token/refresh/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -68,7 +67,7 @@ async function refreshAccessToken() {
 }
 
 // Logout Function
-function logout() {
+export function logout() {
     if (confirm('Are you sure you want to log out?')) {
         // Clear tokens from localStorage
         localStorage.removeItem('access_token');
@@ -78,17 +77,6 @@ function logout() {
         window.location.href = '/login.html';
     }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    const logoutButton = document.getElementById("logout-button");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", logout);
-    } else {
-        console.warn("Logout button not found.");
-    }
-});
-
-
 
 // Function to check authentication
 function isAuthenticated() {
