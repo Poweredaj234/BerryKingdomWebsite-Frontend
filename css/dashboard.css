@@ -15,7 +15,7 @@ body {
         "left-aside     main-content    right-aside"
         "left-aside     low-content     right-aside"
         "footer         footer          footer";
-    padding: 10px;
+    padding: 5px;
     font-weight: 600; 
     font-size: 1.2;
 }
@@ -43,6 +43,7 @@ p {
     color: white;
     padding: 20px;
     text-align: center;
+    border-radius: 5px;
 }
 
 .user-info {
@@ -59,6 +60,21 @@ p {
 
 .left-aside {
     grid-area: left-aside;
+    text-align:center;
+    display: flex;
+}
+
+#leaderboard-container {
+    width: 80%;
+    max-width: 600px;
+    margin: auto auto;
+    background: rgba(150, 150, 150, 0.15);
+    border: 1px solid rgb(112, 112, 112);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0px 3px 5px -1px #ff5661;
+    color:white;
+    font-size: 0.6em
 }
 
 .right-aside {
@@ -77,6 +93,8 @@ p {
     padding: 10px;
     font-size: 0.9em;
     margin-top: auto;
+    border-radius: 5px;
+
 }
 
 nav {
@@ -91,7 +109,7 @@ nav {
     ul li {
         list-style: none;
         margin: 0 auto;
-        border-left: 2px solid #3ca0e7;
+        border-left: 2px solid #4d4d4d;
         display: inline-block;
         padding: 0 30px;
         position: relative;
@@ -105,7 +123,7 @@ nav {
     }
   
     li a:hover {
-        color: #3ca0e7;
+        color: #ff7a83;
     }
   
     li:hover {
@@ -131,9 +149,9 @@ nav {
         min-width: 250px;
         text-align: left;
         padding-top: 20px;
-        box-shadow: 0px 3px 5px -1px #ffa4aa;
+        box-shadow: 0px 3px 5px -1px #FF666F;
     }
-  
+
     ul li ul li {
         clear: both;
         width: 100%;
@@ -144,10 +162,17 @@ nav {
   
     ul li ul li a:hover {
         padding-left: 10px;
-        border-left: 2px solid #3ca0e7;
+        border-left: 2px solid #ff7a83;
         transition: all 0.3s ease;
       }
     }
   }
   
 ul li ul li a { transition: all 0.5s ease; }
+
+/*
+#logout-button {
+    background-color: rgb(145, 145, 145);
+    border: transparent;
+}
+*/
