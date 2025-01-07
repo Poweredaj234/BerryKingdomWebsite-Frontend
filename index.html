@@ -5,25 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/chat.css">
     <script src="js/auth.js" type="module"></script>
     <script src="js/dashboard.js" type="module"></script>
+    <script src="js/chat.js" type="module"></script>
 </head>
 <body>
-    <h1>Welcome to the Game Portal</h1>
-    <p id="user-info">Loading...</p>
-    <h2>Games</h2>
-    <a href="games/coin_toss.html">Coin Toss</a>
-    <a href="games/blackjack.html">Blackjack</a>
-    <h2>Chat</h2>
-    <a href="chat.html">Join Chat</a>
-    <button onclick="location.href='/create-user-by-duke/';">Create User (Dukes Only)</button>
-    <button id="logout-button">Logout</button>
+    <header class="header">
+        <h1>Welcome to the Berry Kingdom</h1>
+        <p id="user-info" class="user-info">Loading...</p>
+        <nav role="navigation" class="primary-navigation">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a>Games &dtrif;</a>
+                <ul class="dropdown">
+                    <li><a href="games/coin_toss.html">Coin Toss</a></li>
+                    <li><a href="games/blackjack.html">Blackjack</a></li>
+                </ul>
+            </li>
+            <li><a href="#">About</a></li>
+            <li><a>Admin &dtrif;</a>
+                <ul class="dropdown">
+                    <li><button onclick="location.href='/create_by_duke.html';">Create User (Dukes Only)</button></li>
+                </ul>
+            </li>
+            <li><button id="logout-button">Logout</button></li>
+        </ul>
+        </nav>
+    </header>    
 
+    <main class="main-content">
+        
+    </main>
+    
+    <aside class="left-aside">
+        <p>this is a test</p>
+    </aside>
+
+    <aside class="right-aside">
+        <div id="chat-container">
+            <h1>Chat</h1>
+            <div id="chat-log"></div>
+            <input type="text" id="chat-message-input" placeholder="Type your message..." />
+            <button id="chat-send-button">Send</button>
+        </div>
+    </aside>
+
+    <footer class="footer">
+        <p>&copy; 2024 Berry Kingdom. All Rights Reserved.</p>
+    </footer>
+    
     <script type="module">
-        import { logout } from './js/auth.js'
+        import { logout } from './js/auth.js';
         document.getElementById("logout-button").addEventListener("click", logout);
     </script>
 </body>
-
 </html>

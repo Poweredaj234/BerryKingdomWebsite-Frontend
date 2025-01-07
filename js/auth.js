@@ -72,7 +72,7 @@ export function logout() {
         // Clear tokens from localStorage
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
-
+        localStorage.removeItem("username");
         // Redirect to login page
         window.location.href = '/login.html';
     }

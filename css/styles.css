@@ -51,7 +51,7 @@ input {
 
 button {
     padding: 10px;
-    background-color: #007BFF;
+    background-color: #FF666F;
     color: white;
     border: none;
     border-radius: 5px;
@@ -60,12 +60,12 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #ff3946;
 }
 
 .button {
     padding: 10px;
-    background-color: #007BFF;
+    background-color: #FF666F;
     color: white;
     border: none;
     border-radius: 5px;
@@ -75,48 +75,8 @@ button:hover {
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #ff3946;
     text-decoration: none;
-}
-
-#chat-container {
-    width: 80%;
-    max-width: 600px;
-    margin: 0 auto;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-}
-
-#chat-log {
-    height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    background: #f9f9f9;
-    margin-bottom: 10px;
-}
-
-#chat-message-input {
-    width: calc(100% - 80px);
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-#chat-send-button {
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#chat-send-button:hover {
-    background-color: #0056b3;
 }
 
 #register-button-container {

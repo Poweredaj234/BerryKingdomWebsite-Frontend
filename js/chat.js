@@ -1,4 +1,5 @@
-const baseSocketURL = `ws://${window.location.host}/ws/chat/`;
+import { redisURL } from "./config.js"
+const baseSocketURL = `ws:${redisURL}ws/chat/`;
 let chatSocket;
 
 document.addEventListener("DOMContentLoaded", () => {
