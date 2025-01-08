@@ -64,6 +64,18 @@ p {
     display: flex;
 }
 
+#leaderboard {
+    background-color: #908f8f;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+#leaderboard p {
+    margin: 5px 0;
+    font-weight: bold;
+}
+
 #leaderboard-container {
     width: 80%;
     max-width: 600px;

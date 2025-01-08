@@ -1,14 +1,15 @@
 const userInfo = document.getElementById("user-info");
-import { apibaseURL, baseURL } from "./config.js";
-console.log("dashboard.js loaded successfully"); 
+import { apibaseURL, baseURL, DEBUG } from "./config.js";
+//console.log("dashboard.js loaded successfully"); 
 
 //fetch user info
 async function fetchUserInfo() {
     const token = localStorage.getItem("access_token");
-    console.log("fetchUserInfo called");
+    //console.log("fetchUserInfo called");
 
     if (!token) {
-        console.warn("Token not found. Redirecting to login.");
+        if(DEBUG==1){console.warn("Access token not found. Redirecting to login.");}
+        else{console.log(`${new Date().toISOString()} | AccessToken . %cFAIL`, "color:rgb(255, 60, 60); font-weight: bold;");}
         window.location.href = "login.html";
         return;
     }
@@ -21,10 +22,12 @@ async function fetchUserInfo() {
             },
         });
 
-        console.log("API response status:", response.status);
+        //console.log("API response status:", response.status);
+        if (response.status == 200) {console.log(`${new Date().toISOString()} | API . . . . . %cOK`, "color: #2bff00; font-weight: bold;");}
+        else{console.log(`${new Date().toISOString()} | API . . . . . %cFAIL`, "color:rgb(255, 60, 60); font-weight: bold;");}
 
         if (!response.ok) {
-            console.error("Failed to fetch user info:", response.status);
+            //console.error("Failed to fetch user info:", response.status);
             if (response.status === 401) {
                 alert("Session expired. Please log in again.");
                 logout();
@@ -35,14 +38,13 @@ async function fetchUserInfo() {
         }
 
         const data = await response.json();
-        console.log("API response data:", data);
+        if(DEBUG==1){console.log("API response data:", data);}
 
         if (Array.isArray(data) && data.length > 0) {
+            
             const tokenUser = localStorage.getItem("username");
-            console.log("Stored username:", tokenUser);
-
             const currentUser = data.find(user => user.username === tokenUser);
-            console.log("Matched user:", currentUser);
+            if(DEBUG==1){console.log("Matched user:", currentUser);console.log("Stored username:", tokenUser);}
 
             if (currentUser) {
                 const userInfoElement = document.getElementById("user-info");
@@ -83,7 +85,8 @@ async function validateToken() {
     const accessToken = localStorage.getItem("access_token");
 
     if (!accessToken) {
-        console.warn("Access token not found. Redirecting to login.");
+        if(DEBUG==1){console.warn("Access token not found. Redirecting to login.");}
+        else{console.log(`${new Date().toISOString()} | AccessToken . %cFAIL`, "color:rgb(255, 60, 60); font-weight: bold;");}
         window.location.href = "login.html";
         return false;
     }
@@ -98,7 +101,9 @@ async function validateToken() {
         });
 
         if (!response.ok) {
-            console.error("Token validation failed:", response.status);
+            if(DEBUG==1){console.error("Token validation failed:", response.status)}
+            else{console.log(`${new Date().toISOString()} | TokenValid. . %cFAIL`, "color:rgb(255, 60, 60); font-weight: bold;");}
+
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");
             localStorage.removeItem("username");
@@ -107,14 +112,17 @@ async function validateToken() {
         }
 
         const data = await response.json();
-        console.log("Token is valid. User data:", data);
+        if(DEBUG==1){console.log("Token is valid. User data:", data);}
+        else{console.log(`${new Date().toISOString()} | TokenValid. . %cOK`, "color: #2bff00; font-weight: bold;");}
+
 
         // Store the username in localStorage
         localStorage.setItem("username", data.username);
 
         return data; // Return user data if token is valid
     } catch (error) {
-        console.error("Token validation error:", error.message, error.stack);
+        if(DEBUG==1){console.error("Token validation error:", error.message, error.stack);}
+        else{console.log(`${new Date().toISOString()} | TokenValid. . %cFAIL`, "color:rgb(255, 60, 60); font-weight: bold;");}
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("username");
@@ -131,19 +139,64 @@ function logout() {
     window.location.href = "login.html";
 }
 
+async function fetchLeaderboard() {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+        if (DEBUG == 1) {console.error("Access token not found");} 
+        else {console.log(`${new Date().toISOString()} | AccessToken . %cFAIL`, "color:rgb(255, 60, 60); font-weight: bold;");}
+        return;
+    }
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/accounts/leaderboard/", {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (response.ok) {
+            const leaderboardData = await response.json();
+            const leaderboardContainer = document.getElementById("leaderboard");
+
+            leaderboardContainer.innerHTML = leaderboardData
+                .map((user, index) => `<p>${index + 1}. ${user.username} - Balance: $${user.balance}</p>`)
+                .join("");
+            console.log(`${new Date().toISOString()} | Leaderboard . %cOK`, "color: #2bff00; font-weight: bold;");  
+        } else {
+            if (DEBUG==1){console.error("Failed to load leaderboard:", response.status);}
+            else{console.log(`${new Date().toISOString()} | LoadLBoard. . %cWARN`, "color:rgb(255, 155, 25); font-weight: bold;");}
+        }
+    } catch (error) {
+        if (DEBUG==1){console.error("Error fetching leaderboard:", error);}
+        else{console.log(`${new Date().toISOString()} | FetchLBoard . %cWARN`, "color:rgb(255, 155, 25); font-weight: bold;");}
+    }
+}
+
 // Initialize dashboard
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("DOM fully loaded and parsed.");
+    //console.log("DOM fully loaded and parsed.");
+    console.log(
+        `${new Date().toISOString()} | DomLoaded . . %cOK`, 
+        "color: #2bff00; font-weight: bold;"
+    );
     const isValid = await validateToken(); // Assuming validateToken ensures token validity
 
     if (isValid) {
-        console.log("Token validated. Fetching user info...");
+        if (DEBUG==1) {console.log("Token validated. Fetching user info...");}
+        else {console.log(
+            `${new Date().toISOString()} | TokenValid. . %cOK`,
+            "color: #2bff00; font-weight: bold;"
+        );}
         fetchUserInfo();
+        fetchLeaderboard();
     } else {
-        console.log("Invalid token. Redirecting to login.");
+        if (DEBUG==1) {console.log("Invalid token. Redirecting to login.");}
+        else {console.log(
+            `${new Date().toISOString()} | TokenValid. . %cFAIL`, 
+            "color:rgb(255, 60, 60); font-weight: bold;"
+        );}
     }
 });
-
 // Register New Account button on login page
 //document.addEventListener("DOMContentLoaded", () => {
 //    const registerLink = document.getElementById("register-link");
